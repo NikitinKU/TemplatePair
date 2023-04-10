@@ -1,0 +1,52 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Пароль пользователя postgres:
+psql (13.2)
+ПРЕДУПРЕЖДЕНИЕ: Кодовая страница консоли (866) отличается от основной
+                страницы Windows (1251).
+                8-битовые (русские) символы могут отображаться некорректно.
+                Подробнее об этом смотрите документацию psql, раздел
+                "Notes for Windows users".
+Введите "help", чтобы получить справку.
+
+postgres=# \c Quotation
+Вы подключены к базе данных "Quotation" как пользователь "postgres".
+Quotation=# SELECT * FROM sagents;
+ aid  | afname |   asname    | apercent
+------+--------+-------------+----------
+ 1000 | Flex   | Albertovich |       15
+ 1001 | Georgy | Blessovich  |       10
+ 1003 | Petr   | Sardelkin   |        7
+(3 ёЄЁюъш)
+
+
+Quotation=# SELECT * FROM sagents;
+ aid  | afname |   asname    | apercent
+------+--------+-------------+----------
+ 1000 | Flex   | Albertovich |       15
+ 1001 | Georgy | Blessovich  |       10
+ 1003 | Petr   | Sardelkin   |        7
+ 1005 | Flex   | Albertovich |        2
+(4 ёЄЁюъш)
+
+                                      ^
+Quotation=# SELECT * FROM sagents WHERE afname IN (SELECT afname FROM sagents GROUP BY afname HAVING COUNT(afname) > 1) ORDER BY aid;
+ aid  | afname |   asname    | apercent
+------+--------+-------------+----------
+ 1000 | Flex   | Albertovich |       15
+ 1005 | Flex   | Albertovich |        2
+(2 ёЄЁюъш)
+
+
+                                             ^
+Quotation=# SELECT * FROM sagents WHERE afname IN (SELECT afname FROM sagents GROUP BY afname, asname HAVING COUNT(*) > 1) ORDER BY aid;
+ aid  | afname |   asname    | apercent
+------+--------+-------------+----------
+ 1000 | Flex   | Albertovich |       15
+ 1005 | Flex   | Albertovich |        2
+(2 ёЄЁюъш)
+
+
+Quotation=#

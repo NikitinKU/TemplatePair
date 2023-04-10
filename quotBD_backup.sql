@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2023-04-10 11:08:06
+-- Started on 2023-04-10 12:18:11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 209 (class 1255 OID 90288)
+-- TOC entry 210 (class 1255 OID 90288)
 -- Name: check_ins_aft(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -38,7 +38,7 @@ $$;
 ALTER FUNCTION public.check_ins_aft() OWNER TO postgres;
 
 --
--- TOC entry 210 (class 1255 OID 90271)
+-- TOC entry 211 (class 1255 OID 90271)
 -- Name: check_qprice(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -114,11 +114,27 @@ ALTER TABLE public.qitem OWNER TO postgres;
 CREATE TABLE public.quotations (
     qid integer NOT NULL,
     qdate date,
-    cid integer
+    cid integer,
+    aid integer
 );
 
 
 ALTER TABLE public.quotations OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 98475)
+-- Name: sagents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sagents (
+    aid integer NOT NULL,
+    afname character varying(45),
+    asname character varying(45),
+    apercent integer
+);
+
+
+ALTER TABLE public.sagents OWNER TO postgres;
 
 --
 -- TOC entry 206 (class 1259 OID 90273)
@@ -167,7 +183,7 @@ CREATE SEQUENCE public."tlog_tkey _seq"
 ALTER TABLE public."tlog_tkey _seq" OWNER TO postgres;
 
 --
--- TOC entry 3041 (class 0 OID 0)
+-- TOC entry 3049 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: tlog_tkey _seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -215,7 +231,7 @@ CREATE VIEW public.v2 AS
 ALTER TABLE public.v2 OWNER TO postgres;
 
 --
--- TOC entry 2879 (class 2604 OID 90280)
+-- TOC entry 2883 (class 2604 OID 90280)
 -- Name: tlog tkey ; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -223,7 +239,7 @@ ALTER TABLE ONLY public.tlog ALTER COLUMN "tkey " SET DEFAULT nextval('public."t
 
 
 --
--- TOC entry 3032 (class 0 OID 82126)
+-- TOC entry 3039 (class 0 OID 82126)
 -- Dependencies: 203
 -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -235,7 +251,7 @@ INSERT INTO public.customers VALUES (103, 'NNMA');
 
 
 --
--- TOC entry 3030 (class 0 OID 82116)
+-- TOC entry 3037 (class 0 OID 82116)
 -- Dependencies: 201
 -- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -247,7 +263,7 @@ INSERT INTO public.equipment VALUES (1003, 'CISCO', 200000.11, 250000.00);
 
 
 --
--- TOC entry 3029 (class 0 OID 82111)
+-- TOC entry 3036 (class 0 OID 82111)
 -- Dependencies: 200
 -- Data for Name: qitem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -264,19 +280,31 @@ INSERT INTO public.qitem VALUES (1, 1002, 1, 10100.00);
 
 
 --
--- TOC entry 3031 (class 0 OID 82121)
+-- TOC entry 3038 (class 0 OID 82121)
 -- Dependencies: 202
 -- Data for Name: quotations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.quotations VALUES (1, '2016-03-01', 100);
-INSERT INTO public.quotations VALUES (2, '2016-01-10', 101);
-INSERT INTO public.quotations VALUES (3, '2016-04-20', 101);
-INSERT INTO public.quotations VALUES (4, '2016-02-29', 102);
+INSERT INTO public.quotations VALUES (1, '2016-03-01', 100, NULL);
+INSERT INTO public.quotations VALUES (2, '2016-01-10', 101, NULL);
+INSERT INTO public.quotations VALUES (3, '2016-04-20', 101, NULL);
+INSERT INTO public.quotations VALUES (4, '2016-02-29', 102, NULL);
 
 
 --
--- TOC entry 3035 (class 0 OID 90277)
+-- TOC entry 3043 (class 0 OID 98475)
+-- Dependencies: 209
+-- Data for Name: sagents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.sagents VALUES (1000, 'Flex', 'Albertovich', 15);
+INSERT INTO public.sagents VALUES (1001, 'Georgy', 'Blessovich', 10);
+INSERT INTO public.sagents VALUES (1003, 'Petr', 'Sardelkin', 7);
+INSERT INTO public.sagents VALUES (1005, 'Flex', 'Albertovich', 2);
+
+
+--
+-- TOC entry 3042 (class 0 OID 90277)
 -- Dependencies: 208
 -- Data for Name: tlog; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -286,7 +314,7 @@ INSERT INTO public.tlog VALUES (2, '2023-03-27 11:40:37.19529+03', 'postgres', '
 
 
 --
--- TOC entry 3042 (class 0 OID 0)
+-- TOC entry 3050 (class 0 OID 0)
 -- Dependencies: 206
 -- Name: test_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -295,7 +323,7 @@ SELECT pg_catalog.setval('public.test_seq', 51, true);
 
 
 --
--- TOC entry 3043 (class 0 OID 0)
+-- TOC entry 3051 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: tlog_tkey _seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -304,7 +332,7 @@ SELECT pg_catalog.setval('public."tlog_tkey _seq"', 2, true);
 
 
 --
--- TOC entry 2889 (class 2606 OID 82130)
+-- TOC entry 2893 (class 2606 OID 82130)
 -- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -313,7 +341,7 @@ ALTER TABLE ONLY public.customers
 
 
 --
--- TOC entry 2885 (class 2606 OID 82120)
+-- TOC entry 2889 (class 2606 OID 82120)
 -- Name: equipment equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -322,7 +350,7 @@ ALTER TABLE ONLY public.equipment
 
 
 --
--- TOC entry 2883 (class 2606 OID 82115)
+-- TOC entry 2887 (class 2606 OID 82115)
 -- Name: qitem qitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -331,7 +359,7 @@ ALTER TABLE ONLY public.qitem
 
 
 --
--- TOC entry 2887 (class 2606 OID 82125)
+-- TOC entry 2891 (class 2606 OID 82125)
 -- Name: quotations quotations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -340,7 +368,16 @@ ALTER TABLE ONLY public.quotations
 
 
 --
--- TOC entry 2891 (class 2606 OID 90282)
+-- TOC entry 2897 (class 2606 OID 98479)
+-- Name: sagents sagents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sagents
+    ADD CONSTRAINT sagents_pkey PRIMARY KEY (aid);
+
+
+--
+-- TOC entry 2895 (class 2606 OID 90282)
 -- Name: tlog tlog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -349,7 +386,7 @@ ALTER TABLE ONLY public.tlog
 
 
 --
--- TOC entry 2895 (class 2620 OID 90272)
+-- TOC entry 2902 (class 2620 OID 90272)
 -- Name: qitem qprice_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -357,7 +394,7 @@ CREATE TRIGGER qprice_trigger BEFORE INSERT OR UPDATE ON public.qitem FOR EACH R
 
 
 --
--- TOC entry 2896 (class 2620 OID 90289)
+-- TOC entry 2903 (class 2620 OID 90289)
 -- Name: tlog trigger_ins_aft; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -365,7 +402,7 @@ CREATE TRIGGER trigger_ins_aft AFTER INSERT OR UPDATE ON public.tlog FOR EACH RO
 
 
 --
--- TOC entry 2893 (class 2606 OID 90254)
+-- TOC entry 2899 (class 2606 OID 90254)
 -- Name: qitem qitem_eqid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -374,7 +411,7 @@ ALTER TABLE ONLY public.qitem
 
 
 --
--- TOC entry 2892 (class 2606 OID 90249)
+-- TOC entry 2898 (class 2606 OID 90249)
 -- Name: qitem qitem_qid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -383,7 +420,16 @@ ALTER TABLE ONLY public.qitem
 
 
 --
--- TOC entry 2894 (class 2606 OID 82131)
+-- TOC entry 2901 (class 2606 OID 98480)
+-- Name: quotations quotations_aid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quotations
+    ADD CONSTRAINT quotations_aid_fkey FOREIGN KEY (aid) REFERENCES public.sagents(aid) NOT VALID;
+
+
+--
+-- TOC entry 2900 (class 2606 OID 82131)
 -- Name: quotations quotations_cid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -391,7 +437,7 @@ ALTER TABLE ONLY public.quotations
     ADD CONSTRAINT quotations_cid_fkey FOREIGN KEY (cid) REFERENCES public.customers(cid) NOT VALID;
 
 
--- Completed on 2023-04-10 11:08:07
+-- Completed on 2023-04-10 12:18:11
 
 --
 -- PostgreSQL database dump complete
