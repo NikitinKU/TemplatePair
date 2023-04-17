@@ -1,0 +1,46 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Пароль пользователя postgres:
+psql (13.2)
+ПРЕДУПРЕЖДЕНИЕ: Кодовая страница консоли (866) отличается от основной
+                страницы Windows (1251).
+                8-битовые (русские) символы могут отображаться некорректно.
+                Подробнее об этом смотрите документацию psql, раздел
+                "Notes for Windows users".
+Введите "help", чтобы получить справку.
+
+postgres=# \с Quotation
+неверная команда \б
+Введите \? для получения справки.
+postgres=# \c Quotation
+Вы подключены к базе данных "Quotation" как пользователь "postgres".
+Quotation=#
+Quotation=#
+Quotation=#
+Quotation=# WITH nw(idgr, pmin, pmax) AS
+Quotation-# {
+Quotation-#     VALUES (1, 0, 0), (2, 1, 50000), (3, 50001, 130000), (4, 130001, 200000), (5, 200001, 400000)
+Quotation-# }
+Quotation-# SELECT idgr, SUM(qprice) AS priceitem, COUNT(*) AS items
+Quotation-#     FROM qitem JOIN nw ON (qitem.qprice BETWEEN nw.pmin AND nw.pmax)
+Quotation-#     GROUP BY idgr
+Quotation-#     ORDER BY idgr;
+ОШИБКА:  ошибка синтаксиса (примерное положение: "{")
+СТРОКА 2: {
+          ^
+Quotation=# WITH nw(idgr, pmin, pmax) AS { VALUES (1, 0, 0), (2, 1, 50000), (3, 50001, 130000), (4, 130001, 200000), (5, 200001, 400000) } SELECT idgr, SUM(qprice) AS priceitem, COUNT(*) AS items FROM qitem JOIN nw ON (qitem.qprice BETWEEN nw.pmin AND nw.pmax) GROUP BY idgr ORDER BY idgr;
+ОШИБКА:  ошибка синтаксиса (примерное положение: "{")
+СТРОКА 1: WITH nw(idgr, pmin, pmax) AS { VALUES (1, 0, 0), (2, 1, 5000...
+                                       ^
+Quotation=# WITH nw(idgr, pmin, pmax) AS ( VALUES (1, 0, 0), (2, 1, 50000), (3, 50001, 130000), (4, 130001, 200000), (5, 200001, 400000) ) SELECT idgr, SUM(qprice) AS priceitem, COUNT(*) AS items FROM qitem JOIN nw ON (qitem.qprice BETWEEN nw.pmin AND nw.pmax) GROUP BY idgr ORDER BY idgr;
+ idgr | priceitem | items
+------+-----------+-------
+    2 |  10100.00 |     1
+    3 | 420001.94 |     4
+    4 | 610000.00 |     4
+(3 ёЄЁюъш)
+
+
+Quotation=#
